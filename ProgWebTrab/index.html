@@ -76,6 +76,11 @@
 
             var author = $('input[name = username]').val();
             var message = $('input[name = message]').val();
+
+            if(author == null){
+              author = "Anonymous"
+            }
+
             $('input[name = message]').val("");
 
             if (author.length && message.length) {
