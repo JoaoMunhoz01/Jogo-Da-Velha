@@ -1,4 +1,5 @@
 $(function () {
+
   var gameplay = 1;
   var winner = "";
   var jogada = 0;
@@ -32,7 +33,6 @@ $(function () {
       equalpositions(2, 4, 6)
     ) {
       $("#winner").html("<h1>Player " + winner + " Wins! </h1>");
-      //$(".position").off("click");
       placar[winner]++;
     } else {
       if (jogada == 9) {
@@ -40,6 +40,9 @@ $(function () {
         placar[0]++;
         
       }
+    }
+    if(winner != ""){
+      $(".position").off("click");
     }
     $("#placar").html("Empate:"+ placar[0] +"<br> Player 1:"+placar[1]+"<br>Player 2:"+placar[2]);
   }
@@ -56,19 +59,25 @@ $(function () {
   });
 
   $(".resetGame").click(function () {
-    $(".position").on("click");
+    var backg = $(this).css("background-image");
+    if (backg == "none" || backg == "") {
+    let img = "none";
+    $(".position").css("background", img);
+    gameplay = winner;
+    winner = "";
+    jogada = 0;
+    $(".position").click(function () {
+      var bg = $(this).css("background-image");
+      if (bg == "none" || bg == "") {
+        var image = "url(" + gameplay.toString() + ".jpg)";
+        $(this).css("background", image);
+        gameplay = gameplay == 1 ? 2 : 1;
+        jogada = jogada + 1;
+        gameover();
+      }
+    });
 
-      var backg = $(this).css("background-image");
-      if (backg == "none" || backg == "") {
-        let img = "none";
-        $(".position").css("background", img);
-        gameplay = winner;
-        winner = "";
-        jogada = 0;
-        
-        
-      }  
-    
+    }  
   });
   
 
