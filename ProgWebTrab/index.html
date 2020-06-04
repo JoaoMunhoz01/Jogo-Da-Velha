@@ -1,0 +1,99 @@
+<DOCTYPE html>
+  <html lang="pt-BR">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+    <script type="text/javascript" src="main.js"></script>
+    <script type="text/javascript" src="../server.js"></script>
+  </head>
+
+  <body>
+    <div class="total">
+      <div class="jogo-space">
+        
+        <div id="game">
+          <div class="line">
+            <div class="position" id="position0"></div>
+            <div class="position" id="position1"></div>
+            <div class="position" id="position2"></div>
+          </div>
+          <div class="line">
+            <div class="position" id="position3"></div>
+            <div class="position" id="position4"></div>
+            <div class="position" id="position5"></div>
+          </div>
+          <div class="line">
+            <div class="position" id="position6"></div>
+            <div class="position" id="position7"></div>
+            <div class="position" id="position8"></div>
+          </div>
+          
+        </div>
+      </div>
+
+      <div class="vencedor">
+        <div id="winner"><h1>Winner</h1></div>
+        <div id="placar">
+          Empate:<br>
+          Player 1:<br>
+          Player 2:
+        </div>
+        <div class="space"></div>
+        <button type="reset" class=" resetGame">Reset Game</button>
+      </div>
+
+      <div class="bate-papo">
+        Chat da Velha
+        <form id="chat">
+          <div class="messages"></div>
+          <input type="text" name="message" autocomplete="off" placeholder="Digite sua mensagem">
+          <button type="submit">Enviar</button>
+        </form>
+        <script type="text/javascript">
+          var socket = io('localhost:3000');
+
+          const renderMessage = (message) => {
+            $('.messages').append('<div class = "message"><strong>' + message.author + '</strong>: ' + message.message + '</div>');
+          }
+
+          socket.on('previousMessages', (messages) => {
+            for (message of messages) {
+              renderMessage(message);
+            }
+          });
+
+          socket.on('receivedMessage', (message) => {
+            renderMessage(message);
+          })
+
+          $('#chat').submit((event) => {
+            event.preventDefault();
+
+            var author = $('input[name = username]').val();
+            var message = $('input[name = message]').val();
+            $('input[name = message]').val("");
+
+            if (author.length && message.length) {
+              var messageObject = {
+                author: author,
+                message: message
+              };
+
+              renderMessage(messageObject);
+
+              socket.emit('sendMessage', messageObject);
+            }
+          });
+        </script>
+
+      </div>
+
+  </body>
+
+  </html>
+</DOCTYPE>
