@@ -59,11 +59,12 @@ $(function () {
   });
 
   $(".resetGame").click(function () {
-    var backg = $(this).css("background-image");
-    if (backg == "none" || backg == "") {
+    document.getElementById("winner").innerHTML= "<h1>Winner</h1>";
     let img = "none";
     $(".position").css("background", img);
-    gameplay = winner;
+    if(winner == 1 || winner == 2){
+      gameplay = winner;  
+    }
     winner = "";
     jogada = 0;
     $(".position").click(function () {
@@ -77,7 +78,7 @@ $(function () {
       }
     });
 
-    }  
+      
   });
   
 
